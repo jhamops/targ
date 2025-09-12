@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Digital de Nefi Arroyo</title>
+    
+    <!-- Scripts de React y Babel -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Reset Básico y Estilos Globales --- */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a09; /* Fondo oscuro base */
+            color: #e5e7eb;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* --- Fondo de Malla de Gradiente Animado --- */
+        .gradient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(at 20% 80%, hsla(211, 89%, 60%, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 80% 10%, hsla(289, 89%, 60%, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 50% 50%, hsla(180, 95%, 55%, 0.1) 0px, transparent 50%);
+            animation: gradient-animation 15s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Estilos Globales de la Página --- */
+        .mainContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          min-height: 100vh;
+          padding: 2rem 1rem;
+          position: relative;
+          overflow-x: hidden;
+        }
+
+        /* --- Selector de Perfil --- */
+        .profileSwitcher {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 2rem;
+          padding: 0.5rem;
+          background-color: rgba(23, 23, 23, 0.7);
+          backdrop-filter: blur(12px);
+          border-radius: 9999px;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          gap: 0.5rem;
+          position: relative;
+          z-index: 10;
+        }
+
+        .profileButton {
+          background-color: transparent;
+          color: #a3a3a3;
+          border: none;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          transform: scale(1);
+          font-size: 1.25rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+        .profileButton svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .profileButton:hover svg {
+          color: #fafafa;
+        }
+
+        .profileButton.active svg {
+          color: #67e8f9;
+        }
+
+        .activeIndicator {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            background-color: rgba(103, 232, 249, 0.2);
+            box-shadow: 0 0 15px rgba(103, 232, 249, 0.5);
+            z-index: -1;
+        }
+
+        .pingAnimation {
+            position: absolute;
+            display: inline-flex;
+            height: 100%;
+            width: 100%;
+            border-radius: 9999px;
+            background-color: #67e8f9;
+            opacity: 0.75;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            z-index: -1;
+        }
+
+        @keyframes ping {
+          75%, 100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
+        }
+
+        .cardContainer {
+            width: 100%;
+            max-width: 1100px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* --- Estilos de la Tarjeta --- */
+        .cardWrapper {
+          transition: all 700ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cardWrapperVisible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .cardWrapperHidden {
+          opacity: 0;
+          transform: translateY(1.25rem);
+        }
+
+        .profileCard {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+          backdrop-filter: blur(24px);
+          background-color: rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1.5rem;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+          padding: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+          .profileCard {
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+          }
+        }
+
+        .leftPanel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 2rem 1.5rem;
+          background-color: rgba(255, 255, 255, 0.05);
+          border-radius: 1rem;
+          grid-row: 1;
+        }
+
+        @media (min-width: 1024px) {
+            .leftPanel {
+                grid-column: 1;
+                align-self: start;
+                position: sticky;
+                top: 2rem;
+            }
+        }
+
+        .profileImage {
+          width: 9rem;
+          height: 9rem;
+          border-radius: 9999px;
+          margin-bottom: 1rem;
+          border: 4px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          object-fit: cover;
+        }
+
+        .profileName {
+          font-size: 1.875rem;
+          line-height: 2.25rem;
+          font-weight: 800;
+          color: #ffffff;
+        }
+
+        .profileRole {
+          font-size: 1.125rem;
+          line-height: 1.75rem;
+          color: #67e8f9;
+          font-weight: 500;
+          margin-top: 0.25rem;
+        }
+
+        .profileTagline {
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          color: #d1d5db;
+          font-style: italic;
+          margin-top: 1rem;
+          max-width: 20rem;
+        }
+
+        .socialLinks {
+          display: flex;
+          gap: 1.25rem;
+          margin-top: 1.5rem;
+          color: #9ca3af;
+        }
+
+        .socialLink {
+          color: inherit;
+          transition: all 0.2s;
+        }
+        .socialLink:hover {
+          color: #ffffff;
+          transform: scale(1.1);
+        }
+        .socialLink svg {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+
+        .rightPanel {
+          grid-row: 2;
+        }
+        @media (min-width: 1024px) {
+            .rightPanel {
+                grid-column: 2;
+                grid-row: 1;
+            }
+        }
+
+        .section {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .summaryText {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        .sectionTitle {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skillsContainer {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+        }
+
+        .skillTag {
+          background-color: #374151;
+          color: #e5e7eb;
+          font-size: 0.875rem;
+          font-weight: 500;
+          padding: 0.375rem 1rem;
+          border-radius: 9999px;
+          transition: background-color 0.2s;
+          cursor: default;
+        }
+
+        .skillTag:hover {
+          background-color: #4b5563;
+        }
+
+        .timeline {
+          position: relative;
+          border-left: 2px solid #374151;
+          margin-left: 1rem; 
+        }
+
+        .timelineItem {
+          position: relative;
+          padding-left: 3rem;
+          padding-bottom: 2rem;
+        }
+        .timelineItem:last-child {
+          padding-bottom: 0;
+        }
+
+        .timelineIcon {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 2rem;
+          height: 2rem;
+          background-color: rgba(55, 65, 81, 0.5);
+          border: 1px solid #4b5563;
+          border-radius: 9999px;
+          transform: translateX(-50%);
+        }
+        .timelineIcon svg {
+          width: 1rem;
+          height: 1rem;
+          color: #67e8f9;
+        }
+
+        .timelineTitle {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: #f3f4f6;
+        }
+        .timelineSubtitle {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: #67e8f9;
+          margin-top: 0.125rem;
+        }
+        .timelineDate {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          margin-top: 0.25rem;
+        }
+        .timelineDescription {
+          margin-top: 0.5rem;
+          font-size: 0.875rem;
+          color: #d1d5db;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+    <div class="gradient-mesh"></div>
+
+    <script type="text/babel">
+        // --- Iconos SVG ---
+        const ICONS = {
+            user: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+            briefcase: "M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z",
+            community: "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z",
+            linkedin: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z",
+            github: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.l17-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
+            rocket: "M13.2,2.3c0.1-0.2,0.1-0.4,0-0.6c-0.1-0.2-0.3-0.3-0.5-0.3H8.3C8,1.3,7.8,1.5,7.7,1.7c-0.1,0.2-0.1,0.4,0,0.6l2,5.1H3.8c-0.2,0-0.4,0.1-0.5,0.3S3.1,8.4,3.3,8.6l7,8c0.1,0.2,0.4,0.3,0.6,0.2c0.2-0.1,0.4-0.3,0.4-0.5V11h5.9c0.2,0,0.4-0.1,0.5-0.3s0.1-0.4-0.1-0.6L13.2,2.3z"
+        };
+
+        // --- Datos de los Perfiles ---
+        const profiles = {
+            main: {
+                name: "Nefi Arroyo",
+                currentRole: "Tech Owner & Community Leader",
+                tagline: "Uniendo tecnología, estrategia y comunidad para construir soluciones del futuro.",
+                photoUrl: "https://media.licdn.com/dms/image/D4E03AQGg7w4gS_T-yQ/profile-displayphoto-shrink_400_400/0/1690858700201?e=1727913600&v=beta&t=xH1B9w1Z4z2n4S-F8e5P5Y0r1a6r5V7w5E2z1X3g9Yw",
+                socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo", github: "https://github.com/nefiarroyo" },
+                summary: "Más de una década de experiencia en el ecosistema tecnológico, evolucionando desde roles de desarrollo hasta el liderazgo técnico y de producto. Apasionado por la arquitectura cloud en AWS y por crear espacios donde la comunidad pueda crecer y aprender.",
+                skills: ["Cloud Architecture", "DevOps Strategy", "AWS", "Product Ownership", "Community Building", "Public Speaking", "Git", "Backend Development"],
+                fullExperience: [
+                    { title: "Tech Owner of AWS availability", subtitle: "Niubiz", date: "Abr 2023 - Presente" },
+                    { title: "Ingeniero Residente Cloud", subtitle: "Soluciones Orión", date: "Abr 2020 - Mar 2023 (3 años)" },
+                    { title: "Chief Technology Officer", subtitle: "NUXTU", date: "Sep 2019 - Abr 2020 (8 meses)" },
+                    { title: "Chief Developer Back-End LATAM", subtitle: "indagia", date: "May 2019 - Sep 2019 (5 meses)" },
+                    { title: "Analista DevOps", subtitle: "PEDREGAL S.A.", date: "Ago 2018 - May 2019 (10 meses)" },
+                    { title: "Analista de TI", subtitle: "PEDREGAL S.A.", date: "Oct 2016 - Ago 2018 (1 año 11 meses)" },
+                    { title: "Analista y Programador", subtitle: "ICPNA REGIÓN CENTRO", date: "May 2015 - Oct 2016 (1 año 6 meses)" },
+                    { title: "Analista y Programador", subtitle: "WII MAX INGENIEROS SAC", date: "Oct 2014 - May 2015 (8 meses)" },
+                    { title: "CEO & Programador", subtitle: "Jumper Solutions", date: "Ene 2010 - Ene 2015 (5 años 1 mes)" },
+                    { title: "Desarrollador de Aplicaciones Web", subtitle: "EMPRESA EDUCATIVA ZAVER S.A.C.", date: "May 2014 - Nov 2014 (7 meses)" },
+                    { title: "Programador", subtitle: "Empresa de transporte XX", date: "Ago 2011 - Dic 2011 (5 meses)" },
+                    { title: "Desarrollador Web", subtitle: "Municipalidad Provincial de Huancayo", date: "May 2011 - Oct 2011 (6 meses)" },
+                ]
+            },
+            niubiz: {
+                name: "Nefi Arroyo",
+                currentRole: "Tech Owner of AWS availability",
+                tagline: "Garantizando la continuidad del negocio a través de una infraestructura cloud robusta y resiliente.",
+                photoUrl: "https://placehold.co/150x150/0d1b2a/e0e1dd?text=Niubiz&font=inter",
+                socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo" },
+                roleFocus: [
+                     { title: "Visión Estratégica", description: "Definir y ejecutar el roadmap técnico para la disponibilidad de los servicios en AWS, alineado con los objetivos de negocio." },
+                     { title: "Liderazgo Técnico", description: "Guiar al equipo en la adopción de las mejores prácticas de arquitectura Well-Architected, enfocándose en la fiabilidad y la eficiencia de costos." },
+                     { title: "Gestión de Incidentes", description: "Liderar la respuesta a incidentes críticos para minimizar el impacto y mejorar los sistemas para prevenir futuras fallas." },
+                ],
+                skills: ["High Availability Architecture", "Disaster Recovery", "FinOps", "AWS Well-Architected", "Site Reliability Engineering (SRE)", "Infrastructure as Code (IaC)"],
+            },
+            community: {
+                name: "Nefi Arroyo",
+                currentRole: "Speaker & Community Organizer",
+                tagline: "Compartir conocimiento es la mejor forma de hacer crecer el ecosistema.",
+                photoUrl: "https://placehold.co/150x150/4a00e0/ffffff?text=Speaker&font=inter",
+                socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo", github: "https://github.com/nefiarroyo" },
+                ponencias: [
+                    { title: "Arquitecturas Serverless para el Mundo Real", subtitle: "AWS Community Day Perú 2024", description: "Una charla sobre patrones de diseño y lecciones aprendidas implementando soluciones serverless a gran escala." },
+                    { title: "De Monolito a Microservicios: Un Viaje en la Nube", subtitle: "Cloud Conf Latam 2023", description: "Presenté un caso de estudio sobre la migración exitosa de una aplicación monolítica a una arquitectura de microservicios en AWS." },
+                ],
+                eventosOrganizados: [
+                    { title: "Organizador Principal, Community Fest 2025", subtitle: "Próximo Gran Evento", description: "Liderando la planificación del evento que unirá a las comunidades de tecnología más importantes del Perú." },
+                    { title: "Organizador Principal, AWS Community Day Perú 2024", subtitle: "Lima, Perú", description: "Por segundo año consecutivo, al frente del evento más grande para la comunidad de AWS en el país." },
+                    { title: "Organizador Principal, AWS Community Day Perú 2023", subtitle: "ft. Jeff Barr", description: "Líder del equipo organizador del histórico primer AWS Community Day en Perú, con la presencia del Chief Evangelist de AWS." },
+                ],
+                iniciativas: [
+                     { title: "Coordinador, FLISoL Huancayo", date: "2018", description: "Organicé el Festival Latinoamericano de Instalación de Software Libre para promover el uso de tecnologías open source en mi región." },
+                ]
+            }
+        };
+        
+        // --- Componente Icono (Reutilizable) ---
+        const Icon = ({ path }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d={path} />
+            </svg>
+        );
+
+        // --- Componente ProfileCard ---
+        const ProfileCard = ({ profileData, isVisible }) => {
+            
+            const renderTimelineItem = (item, index, iconPath) => (
+                <div className="timelineItem" key={`${item.title}-${index}`}>
+                    <div className="timelineIcon"><Icon path={iconPath} /></div>
+                    <h3 className="timelineTitle">{item.title}</h3>
+                    {item.subtitle && <p className="timelineSubtitle">{item.subtitle}</p>}
+                    {item.date && <p className="timelineDate">{item.date}</p>}
+                    <p className="timelineDescription">{item.description}</p>
+                </div>
+            );
+
+            const renderSections = () => {
+                // Perfil Principal
+                if (profileData.summary) {
+                    return (<>
+                        <section className="section">
+                            <h2 className="sectionTitle">Sobre Mí</h2>
+                            <p className="summaryText">{profileData.summary}</p>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Habilidades Clave</h2>
+                            <div className="skillsContainer">
+                                {profileData.skills.map(skill => <span key={skill} className="skillTag">{skill}</span>)}
+                            </div>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Trayectoria Profesional Completa</h2>
+                            <div className="timeline">
+                                {profileData.fullExperience.map((item, index) => renderTimelineItem(item, index, ICONS.briefcase))}
+                            </div>
+                        </section>
+                    </>);
+                }
+                // Perfil de Empresa
+                if (profileData.roleFocus) {
+                    return (<>
+                        <section className="section">
+                            <h2 className="sectionTitle">Enfoque del Rol en Niubiz</h2>
+                            <div className="timeline">
+                                {profileData.roleFocus.map((item, index) => renderTimelineItem(item, index, ICONS.rocket))}
+                            </div>
+                        </section>
+                         <section className="section">
+                            <h2 className="sectionTitle">Habilidades Aplicadas</h2>
+                            <div className="skillsContainer">
+                                {profileData.skills.map(skill => <span key={skill} className="skillTag">{skill}</span>)}
+                            </div>
+                        </section>
+                    </>);
+                }
+                // Perfil de Comunidad
+                if (profileData.ponencias) {
+                    return (<>
+                        <section className="section">
+                            <h2 className="sectionTitle">Ponencias Destacadas</h2>
+                             <div className="timeline">
+                                {profileData.ponencias.map((item, index) => renderTimelineItem(item, index, ICONS.community))}
+                            </div>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Eventos Organizados</h2>
+                             <div className="timeline">
+                                {profileData.eventosOrganizados.map((item, index) => renderTimelineItem(item, index, ICONS.briefcase))}
+                            </div>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Otras Iniciativas Comunitarias</h2>
+                             <div className="timeline">
+                                {profileData.iniciativas.map((item, index) => renderTimelineItem(item, index, ICONS.rocket))}
+                            </div>
+                        </section>
+                    </>);
+                }
+                return null;
+            };
+            
+            return (
+                <div className={`cardWrapper ${isVisible ? 'cardWrapperVisible' : 'cardWrapperHidden'}`}>
+                    <div className="profileCard">
+                        <aside className="leftPanel">
+                            <img src={profileData.photoUrl} alt={`Foto de ${profileData.name}`} className="profileImage" />
+                            <h1 className="profileName">{profileData.name}</h1>
+                            <p className="profileRole">{profileData.currentRole}</p>
+                            <p className="profileTagline">"{profileData.tagline}"</p>
+                            <div className="socialLinks">
+                                {Object.entries(profileData.socialLinks).map(([key, link]) => (
+                                    <a key={key} href={link} target="_blank" rel="noopener noreferrer" className="socialLink">
+                                        <Icon path={ICONS[key]} />
+                                    </a>
+                                ))}
+                            </div>
+                        </aside>
+                        <div className="rightPanel">
+                            {renderSections()}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Componente Principal de la Página ---
+        function HomePage() {
+            const [activeProfileKey, setActiveProfileKey] = React.useState('main');
+            const [cardVisible, setCardVisible] = React.useState(true);
+            
+            React.useEffect(() => {
+                const hash = window.location.hash.replace('#', '');
+                if (profiles[hash]) setActiveProfileKey(hash);
+            }, []);
+
+            const handleProfileChange = (key) => {
+                if (key !== activeProfileKey) {
+                    setCardVisible(false);
+                    setTimeout(() => {
+                        setActiveProfileKey(key);
+                        window.location.hash = key;
+                        setCardVisible(true);
+                    }, 300); 
+                }
+            };
+            
+            const profileButtons = [
+                { key: 'main', label: 'Principal', icon: ICONS.user },
+                { key: 'niubiz', label: 'Empresa', icon: ICONS.briefcase },
+                { key: 'community', label: 'Comunidad', icon: ICONS.community },
+            ];
+
+            return (
+                <main className="mainContainer">
+                    <div className="profileSwitcher">
+                        {profileButtons.map(({ key, label, icon }) => {
+                            const isActive = activeProfileKey === key;
+                            return (
+                               <button 
+                                   key={key}
+                                   onClick={() => handleProfileChange(key)} 
+                                   className={`profileButton ${isActive ? 'active' : ''}`}
+                                   aria-label={`Perfil ${label}`}
+                                >
+                                    {isActive && <span className="pingAnimation"></span>}
+                                    {isActive && <span className="activeIndicator"></span>}
+                                    <Icon path={icon} />
+                                </button>
+                            )
+                        })}
+                    </div>
+                    <div className="cardContainer">
+                         <ProfileCard 
+                             profileData={profiles[activeProfileKey]} 
+                             isVisible={cardVisible}
+                         />
+                    </div>
+                </main>
+            );
+        };
+
+        ReactDOM.render(<HomePage />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
