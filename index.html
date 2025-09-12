@@ -17,45 +17,140 @@
 
     <style>
         /* --- Reset Básico y Estilos Globales --- */
+        :root {
+            --transition-speed: 0.3s;
+        }
+
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background-color: #010101; /* Fondo negro profundo */
-            color: #d1d5db; /* Color de texto principal */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
         }
         * {
             box-sizing: border-box;
         }
+
+        /* =================================================================
+           THEME: Profesional
+           ================================================================= */
+        .theme-professional {
+            --bg-color: #0c0a09;
+            --text-color-main: #e5e7eb;
+            --text-color-secondary: #d1d5db;
+            --text-color-accent: #67e8f9;
+            --text-color-muted: #9ca3af;
+            --font-title: 'Inter', sans-serif;
+            --card-bg: rgba(0, 0, 0, 0.3);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --panel-bg: rgba(255, 255, 255, 0.05);
+            --panel-border: transparent;
+            --switcher-bg: rgba(23, 23, 23, 0.7);
+            --switcher-border: rgba(255, 255, 255, 0.1);
+            --switcher-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            --button-hover: #fafafa;
+            --active-indicator-bg: rgba(103, 232, 249, 0.2);
+            --active-indicator-shadow: 0 0 15px rgba(103, 232, 249, 0.5);
+            --ping-bg: #67e8f9;
+            --skill-bg: #374151;
+            --skill-color: #e5e7eb;
+            --skill-border: transparent;
+            --timeline-line: #374151;
+            --timeline-icon-bg: rgba(55, 65, 81, 0.5);
+            --timeline-icon-border: #4b5563;
+        }
+
+        /* =================================================================
+           THEME: Neon
+           ================================================================= */
+        .theme-neon {
+            --bg-color: #010101;
+            --text-color-main: #d1d5db;
+            --text-color-secondary: #a3a3a3;
+            --text-color-accent: #0ff;
+            --text-color-muted: #a3a3a3;
+            --font-title: 'Space Mono', monospace;
+            --card-bg: rgba(10, 10, 10, 0.75);
+            --card-border: rgba(255, 0, 255, 0.3);
+            --panel-bg: rgba(10, 10, 10, 0.5);
+            --panel-border: rgba(0, 255, 255, 0.2);
+            --switcher-bg: rgba(10, 10, 10, 0.75);
+            --switcher-border: rgba(255, 0, 255, 0.3);
+            --switcher-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+            --button-hover: #f0f;
+            --active-indicator-bg: rgba(0, 255, 255, 0.1);
+            --active-indicator-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            --ping-bg: #0ff;
+            --skill-bg: rgba(255, 0, 255, 0.1);
+            --skill-color: #f0f;
+            --skill-border: rgba(255, 0, 255, 0.3);
+            --timeline-line: rgba(0, 255, 255, 0.2);
+            --timeline-icon-bg: #010101;
+            --timeline-icon-border: rgba(0, 255, 255, 0.3);
+        }
+
+        /* =================================================================
+           THEME: Gaming
+           ================================================================= */
+        .theme-gaming {
+            --bg-color: #1a1a2e;
+            --text-color-main: #e0e0e0;
+            --text-color-secondary: #b3b3b3;
+            --text-color-accent: #ff9800; /* Naranja vibrante */
+            --text-color-muted: #8e8e9c;
+            --font-title: 'Space Mono', monospace;
+            --card-bg: rgba(26, 26, 46, 0.8);
+            --card-border: #9d4edd; /* Morado */
+            --panel-bg: rgba(46, 46, 66, 0.5);
+            --panel-border: #9d4edd;
+            --switcher-bg: rgba(26, 26, 46, 0.8);
+            --switcher-border: #ff9800;
+            --switcher-shadow: 0 0 20px rgba(255, 152, 0, 0.4);
+            --button-hover: #ff9800;
+            --active-indicator-bg: rgba(255, 152, 0, 0.2);
+            --active-indicator-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+            --ping-bg: #ff9800;
+            --skill-bg: rgba(157, 78, 221, 0.2);
+            --skill-color: #c77dff;
+            --skill-border: #9d4edd;
+            --timeline-line: #9d4edd;
+            --timeline-icon-bg: #1a1a2e;
+            --timeline-icon-border: #ff9800;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color-main);
+        }
         
-        /* --- Fondo Animado Cyberpunk --- */
-        .cyber-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background: #010101;
-            overflow: hidden;
+        /* --- Fondos Animados --- */
+        .background-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden;
+        }
+        .background-container > div {
+             position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease-in-out;
+        }
+        .background-container > div.active { opacity: 1; }
+
+        .gradient-mesh {
+            background: radial-gradient(at 20% 80%, hsla(211, 89%, 60%, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 80% 10%, hsla(289, 89%, 60%, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 50% 50%, hsla(180, 95%, 55%, 0.1) 0px, transparent 50%);
+            animation: gradient-animation 15s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
 
         .cyber-bg .dot {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: #f0f; /* Magenta Neon */
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: move 10s linear infinite;
+            position: absolute; width: 2px; height: 2px; background-color: #f0f; border-radius: 50%; opacity: 0.5; animation: move 10s linear infinite;
         }
-
         @keyframes move {
-            from { transform: translateY(0); }
-            to { transform: translateY(-100vh); }
+            from { transform: translateY(0); } to { transform: translateY(-100vh); }
         }
 
+        #gaming-particles {
+            position: absolute; width: 100%; height: 100%;
+        }
 
         /* --- Estilos Globales de la Página --- */
         .mainContainer {
@@ -69,17 +164,42 @@
           overflow-x: hidden;
         }
 
+        .themeSwitcher {
+          display: flex;
+          gap: 0.5rem;
+          padding: 0.5rem;
+          background-color: var(--switcher-bg);
+          backdrop-filter: blur(10px);
+          border-radius: 9999px;
+          border: 1px solid var(--switcher-border);
+          box-shadow: var(--switcher-shadow);
+          position: relative;
+          z-index: 20;
+          margin-bottom: 1rem;
+        }
+        .themeButton {
+            width: 35px; height: 35px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease;
+        }
+        .themeButton.professional { background: #0c0a09; border-color: #67e8f9; }
+        .themeButton.neon { background: #010101; border-color: #f0f; }
+        .themeButton.gaming { background: #1a1a2e; border-color: #ff9800; }
+        .themeButton.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+
         /* --- Selector de Perfil --- */
         .profileSwitcher {
           display: flex;
           justify-content: center;
           margin-bottom: 2rem;
           padding: 0.5rem;
-          background-color: rgba(10, 10, 10, 0.75);
+          background-color: var(--switcher-bg);
           backdrop-filter: blur(10px);
           border-radius: 9999px;
-          border: 1px solid rgba(255, 0, 255, 0.3); /* Borde magenta */
-          box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+          border: 1px solid var(--switcher-border);
+          box-shadow: var(--switcher-shadow);
           gap: 0.5rem;
           position: relative;
           z-index: 10;
@@ -87,7 +207,7 @@
 
         .profileButton {
           background-color: transparent;
-          color: #a3a3a3; /* Color de icono inactivo */
+          color: var(--text-color-secondary);
           border: none;
           width: 50px;
           height: 50px;
@@ -106,19 +226,19 @@
         }
 
         .profileButton:hover svg {
-          color: #f0f; /* Magenta Neon */
+          color: var(--button-hover);
         }
 
         .profileButton.active svg {
-          color: #0ff; /* Cian Eléctrico */
+          color: var(--text-color-accent);
         }
 
         .activeIndicator {
             position: absolute;
             inset: 0;
             border-radius: 9999px;
-            background-color: rgba(0, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background-color: var(--active-indicator-bg);
+            box-shadow: var(--active-indicator-shadow);
             z-index: -1;
         }
 
@@ -128,7 +248,7 @@
             height: 100%;
             width: 100%;
             border-radius: 9999px;
-            background-color: #0ff;
+            background-color: var(--ping-bg);
             opacity: 0.75;
             animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
             z-index: -1;
@@ -168,11 +288,11 @@
           grid-template-columns: 1fr;
           gap: 1.5rem;
           backdrop-filter: blur(8px);
-          background-color: rgba(10, 10, 10, 0.75);
-          border: 1px solid rgba(255, 0, 255, 0.3);
+          background-color: var(--card-bg);
+          border: 1px solid var(--card-border);
           border-radius: 1rem;
-          box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
           padding: 1.5rem;
+          transition: all var(--transition-speed) ease;
         }
 
         @media (min-width: 1024px) {
@@ -189,10 +309,11 @@
           align-items: center;
           text-align: center;
           padding: 2rem 1.5rem;
-          background-color: rgba(10, 10, 10, 0.5);
+          background-color: var(--panel-bg);
           border-radius: 1rem;
-          border: 1px solid rgba(0, 255, 255, 0.2);
+          border: 1px solid var(--panel-border);
           grid-row: 1;
+          transition: all var(--transition-speed) ease;
         }
 
         @media (min-width: 1024px) {
@@ -209,30 +330,42 @@
           height: 9rem;
           border-radius: 9999px;
           margin-bottom: 1rem;
-          border: 4px solid rgba(0, 255, 255, 0.5);
+          border: 4px solid var(--text-color-accent);
           box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
           object-fit: cover;
+          transition: all var(--transition-speed) ease;
+        }
+        .theme-gaming .profileImage {
+          border-color: var(--card-border);
         }
 
         .profileName {
-          font-family: 'Space Mono', monospace;
+          font-family: var(--font-title);
           font-size: 1.875rem;
           font-weight: 700;
           color: #fff;
-          text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+          transition: all var(--transition-speed) ease;
         }
+        
+        .theme-neon .profileName, .theme-neon .profileRole, .theme-neon .sectionTitle {
+            text-shadow: 0 0 5px currentColor;
+        }
+        .theme-gaming .profileName {
+            color: var(--text-color-accent);
+        }
+
 
         .profileRole {
           font-size: 1.125rem;
-          color: #0ff;
+          color: var(--text-color-accent);
           font-weight: 500;
           margin-top: 0.25rem;
-          text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+          transition: all var(--transition-speed) ease;
         }
 
         .profileTagline {
           font-size: 0.875rem;
-          color: #a3a3a3;
+          color: var(--text-color-secondary);
           font-style: italic;
           margin-top: 1rem;
           max-width: 20rem;
@@ -242,7 +375,7 @@
           display: flex;
           gap: 1.25rem;
           margin-top: 1.5rem;
-          color: #a3a3a3;
+          color: var(--text-color-secondary);
         }
 
         .socialLink {
@@ -250,9 +383,8 @@
           transition: all 0.2s;
         }
         .socialLink:hover {
-          color: #f0f;
+          color: var(--button-hover);
           transform: translateY(-3px) scale(1.1);
-          text-shadow: 0 0 10px #f0f;
         }
         .socialLink svg {
           width: 1.5rem;
@@ -273,8 +405,9 @@
             padding: 1.5rem;
             background-color: transparent;
             border-radius: 1rem;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid var(--panel-border);
             margin-bottom: 1.5rem;
+            transition: all var(--transition-speed) ease;
         }
         .section:last-child {
             margin-bottom: 0;
@@ -283,18 +416,18 @@
         .summaryText {
             font-size: 1rem;
             line-height: 1.6;
-            color: #d1d5db;
+            color: var(--text-color-main);
         }
 
         .sectionTitle {
-            font-family: 'Space Mono', monospace;
+            font-family: var(--font-title);
             font-size: 1.25rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            border-bottom: 1px solid var(--panel-border);
+            transition: all var(--transition-speed) ease;
         }
 
         .skillsContainer {
@@ -305,24 +438,25 @@
 
         .skillTag {
           font-family: 'Space Mono', monospace;
-          background-color: rgba(255, 0, 255, 0.1);
-          color: #f0f;
+          background-color: var(--skill-bg);
+          color: var(--skill-color);
           font-size: 0.8rem;
           font-weight: 400;
           padding: 0.375rem 1rem;
           border-radius: 4px;
-          border: 1px solid rgba(255, 0, 255, 0.3);
+          border: 1px solid var(--skill-border);
           transition: all 0.2s;
           cursor: default;
         }
         .skillTag:hover {
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 10px var(--skill-color);
         }
 
         .timeline {
           position: relative;
-          border-left: 2px solid rgba(0, 255, 255, 0.2);
+          border-left: 2px solid var(--timeline-line);
           margin-left: 1rem; 
+          transition: all var(--transition-speed) ease;
         }
 
         .timelineItem {
@@ -343,20 +477,21 @@
           justify-content: center;
           width: 2rem;
           height: 2rem;
-          background-color: #010101;
-          border: 1px solid rgba(0, 255, 255, 0.3);
-          box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+          background-color: var(--bg-color);
+          border: 1px solid var(--timeline-icon-border);
+          box-shadow: 0 0 10px var(--text-color-accent);
           border-radius: 9999px;
           transform: translateX(-50%);
+          transition: all var(--transition-speed) ease;
         }
         .timelineIcon svg {
           width: 1rem;
           height: 1rem;
-          color: #0ff;
+          color: var(--text-color-accent);
         }
 
         .timelineTitle {
-          font-family: 'Space Mono', monospace;
+          font-family: var(--font-title);
           font-size: 1.125rem;
           font-weight: 700;
           color: #fff;
@@ -364,27 +499,28 @@
         .timelineSubtitle {
           font-size: 0.875rem;
           font-weight: 500;
-          color: #0ff;
+          color: var(--text-color-accent);
           margin-top: 0.125rem;
         }
         .timelineDate {
           font-family: 'Space Mono', monospace;
           font-size: 0.75rem;
-          color: #a3a3a3;
+          color: var(--text-color-secondary);
           margin-top: 0.25rem;
         }
         .timelineDescription {
           margin-top: 0.5rem;
           font-size: 0.875rem;
-          color: #d1d5db;
+          color: var(--text-color-main);
         }
     </style>
 </head>
 <body>
 
     <div id="root"></div>
-    <div class="cyber-bg"></div>
-
+    <div class="background-container"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script type="text/babel">
         // --- Iconos SVG ---
         const ICONS = {
@@ -471,26 +607,60 @@
         
         // --- Componente Icono (Reutilizable) ---
         const Icon = ({ path }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <svg xmlns="http://www.w.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d={path} />
             </svg>
         );
         
-        // --- Efecto de fondo de partículas ---
-        function BackgroundEffect() {
+        // --- Efectos de fondo ---
+        function BackgroundManager({ theme }) {
             React.useEffect(() => {
-                const bg = document.querySelector('.cyber-bg');
-                const numDots = 50;
-                for (let i = 0; i < numDots; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = 'dot';
-                    dot.style.left = `${Math.random() * 100}vw`;
-                    dot.style.top = `${Math.random() * 100}vh`;
-                    dot.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                    dot.style.animationDelay = `${Math.random() * 5}s`;
-                    bg.appendChild(dot);
+                const container = document.querySelector('.background-container');
+                container.innerHTML = ''; // Limpiar fondos anteriores
+                
+                if (theme === 'professional') {
+                    const bg = document.createElement('div');
+                    bg.className = 'gradient-mesh active';
+                    container.appendChild(bg);
+                } else if (theme === 'neon') {
+                    const bg = document.createElement('div');
+                    bg.className = 'cyber-bg active';
+                    const numDots = 50;
+                    for (let i = 0; i < numDots; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'dot';
+                        dot.style.left = `${Math.random() * 100}vw`;
+                        dot.style.top = `${Math.random() * 100}vh`;
+                        dot.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                        dot.style.animationDelay = `${Math.random() * 5}s`;
+                        bg.appendChild(dot);
+                    }
+                    container.appendChild(bg);
+                } else if (theme === 'gaming') {
+                     const bg = document.createElement('div');
+                     bg.id = 'gaming-particles';
+                     bg.className = 'active';
+                     container.appendChild(bg);
+                     particlesJS('gaming-particles', { /* Configuración de particles.js */
+                        "particles": {
+                            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                            "color": { "value": "#ff9800" },
+                            "shape": { "type": "circle" },
+                            "opacity": { "value": 0.5, "random": false },
+                            "size": { "value": 3, "random": true },
+                            "line_linked": { "enable": true, "distance": 150, "color": "#9d4edd", "opacity": 0.4, "width": 1 },
+                            "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                        },
+                        "interactivity": {
+                            "detect_on": "canvas",
+                            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                            "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+                        },
+                        "retina_detect": true
+                    });
                 }
-            }, []);
+            }, [theme]);
+            
             return null;
         }
 
@@ -622,6 +792,11 @@
         function HomePage() {
             const [activeProfileKey, setActiveProfileKey] = React.useState('main');
             const [cardVisible, setCardVisible] = React.useState(true);
+            const [theme, setTheme] = React.useState('professional');
+
+            React.useEffect(() => {
+                document.body.className = `theme-${theme}`;
+            }, [theme]);
             
             React.useEffect(() => {
                 const hash = window.location.hash.replace('#', '');
@@ -646,9 +821,23 @@
                 { key: 'builder', label: 'Builder', icon: ICONS.code },
             ];
 
+            const themes = ['professional', 'neon', 'gaming'];
+
             return (
                 <main className="mainContainer">
-                    <BackgroundEffect />
+                    <BackgroundManager theme={theme} />
+                    <div className="themeSwitcher">
+                        {themes.map(t => (
+                            <button
+                                key={t}
+                                className={`themeButton ${t} ${theme === t ? 'active' : ''}`}
+                                onClick={() => setTheme(t)}
+                                aria-label={`Cambiar a tema ${t}`}
+                                style={{color: `var(--card-border)`}}
+                            />
+                        ))}
+                    </div>
+
                     <div className="profileSwitcher">
                         {profileButtons.map(({ key, label, icon }) => {
                             const isActive = activeProfileKey === key;
