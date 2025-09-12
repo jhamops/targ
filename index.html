@@ -13,15 +13,15 @@
     <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 
     <style>
         /* --- Reset Básico y Estilos Globales --- */
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background-color: #0c0a09; /* Fondo oscuro base */
-            color: #e5e7eb;
+            background-color: #010101; /* Fondo negro profundo */
+            color: #d1d5db; /* Color de texto principal */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -29,25 +29,33 @@
             box-sizing: border-box;
         }
         
-        /* --- Fondo de Malla de Gradiente Animado --- */
-        .gradient-mesh {
+        /* --- Fondo Animado Cyberpunk --- */
+        .cyber-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            background: radial-gradient(at 20% 80%, hsla(211, 89%, 60%, 0.15) 0px, transparent 50%),
-                        radial-gradient(at 80% 10%, hsla(289, 89%, 60%, 0.15) 0px, transparent 50%),
-                        radial-gradient(at 50% 50%, hsla(180, 95%, 55%, 0.1) 0px, transparent 50%);
-            animation: gradient-animation 15s ease infinite;
+            background: #010101;
+            overflow: hidden;
         }
 
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .cyber-bg .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #f0f; /* Magenta Neon */
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: move 10s linear infinite;
         }
+
+        @keyframes move {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100vh); }
+        }
+
 
         /* --- Estilos Globales de la Página --- */
         .mainContainer {
@@ -67,11 +75,11 @@
           justify-content: center;
           margin-bottom: 2rem;
           padding: 0.5rem;
-          background-color: rgba(23, 23, 23, 0.7);
-          backdrop-filter: blur(12px);
+          background-color: rgba(10, 10, 10, 0.75);
+          backdrop-filter: blur(10px);
           border-radius: 9999px;
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 0, 255, 0.3); /* Borde magenta */
+          box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
           gap: 0.5rem;
           position: relative;
           z-index: 10;
@@ -79,15 +87,13 @@
 
         .profileButton {
           background-color: transparent;
-          color: #a3a3a3;
+          color: #a3a3a3; /* Color de icono inactivo */
           border: none;
           width: 50px;
           height: 50px;
           border-radius: 50%;
           cursor: pointer;
           transition: all 0.3s ease;
-          transform: scale(1);
-          font-size: 1.25rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -100,19 +106,19 @@
         }
 
         .profileButton:hover svg {
-          color: #fafafa;
+          color: #f0f; /* Magenta Neon */
         }
 
         .profileButton.active svg {
-          color: #67e8f9;
+          color: #0ff; /* Cian Eléctrico */
         }
 
         .activeIndicator {
             position: absolute;
             inset: 0;
             border-radius: 9999px;
-            background-color: rgba(103, 232, 249, 0.2);
-            box-shadow: 0 0 15px rgba(103, 232, 249, 0.5);
+            background-color: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
             z-index: -1;
         }
 
@@ -122,7 +128,7 @@
             height: 100%;
             width: 100%;
             border-radius: 9999px;
-            background-color: #67e8f9;
+            background-color: #0ff;
             opacity: 0.75;
             animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
             z-index: -1;
@@ -161,11 +167,11 @@
           display: grid;
           grid-template-columns: 1fr;
           gap: 1.5rem;
-          backdrop-filter: blur(24px);
-          background-color: rgba(0, 0, 0, 0.3);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 1.5rem;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(8px);
+          background-color: rgba(10, 10, 10, 0.75);
+          border: 1px solid rgba(255, 0, 255, 0.3);
+          border-radius: 1rem;
+          box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
           padding: 1.5rem;
         }
 
@@ -183,8 +189,9 @@
           align-items: center;
           text-align: center;
           padding: 2rem 1.5rem;
-          background-color: rgba(255, 255, 255, 0.05);
+          background-color: rgba(10, 10, 10, 0.5);
           border-radius: 1rem;
+          border: 1px solid rgba(0, 255, 255, 0.2);
           grid-row: 1;
         }
 
@@ -202,30 +209,30 @@
           height: 9rem;
           border-radius: 9999px;
           margin-bottom: 1rem;
-          border: 4px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          border: 4px solid rgba(0, 255, 255, 0.5);
+          box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
           object-fit: cover;
         }
 
         .profileName {
+          font-family: 'Space Mono', monospace;
           font-size: 1.875rem;
-          line-height: 2.25rem;
-          font-weight: 800;
-          color: #ffffff;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         .profileRole {
           font-size: 1.125rem;
-          line-height: 1.75rem;
-          color: #67e8f9;
+          color: #0ff;
           font-weight: 500;
           margin-top: 0.25rem;
+          text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .profileTagline {
           font-size: 0.875rem;
-          line-height: 1.25rem;
-          color: #d1d5db;
+          color: #a3a3a3;
           font-style: italic;
           margin-top: 1rem;
           max-width: 20rem;
@@ -235,7 +242,7 @@
           display: flex;
           gap: 1.25rem;
           margin-top: 1.5rem;
-          color: #9ca3af;
+          color: #a3a3a3;
         }
 
         .socialLink {
@@ -243,8 +250,9 @@
           transition: all 0.2s;
         }
         .socialLink:hover {
-          color: #ffffff;
-          transform: scale(1.1);
+          color: #f0f;
+          transform: translateY(-3px) scale(1.1);
+          text-shadow: 0 0 10px #f0f;
         }
         .socialLink svg {
           width: 1.5rem;
@@ -263,8 +271,9 @@
 
         .section {
             padding: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: transparent;
             border-radius: 1rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
             margin-bottom: 1.5rem;
         }
         .section:last-child {
@@ -278,12 +287,14 @@
         }
 
         .sectionTitle {
+            font-family: 'Space Mono', monospace;
             font-size: 1.25rem;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .skillsContainer {
@@ -293,23 +304,24 @@
         }
 
         .skillTag {
-          background-color: #374151;
-          color: #e5e7eb;
-          font-size: 0.875rem;
-          font-weight: 500;
+          font-family: 'Space Mono', monospace;
+          background-color: rgba(255, 0, 255, 0.1);
+          color: #f0f;
+          font-size: 0.8rem;
+          font-weight: 400;
           padding: 0.375rem 1rem;
-          border-radius: 9999px;
-          transition: background-color 0.2s;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 0, 255, 0.3);
+          transition: all 0.2s;
           cursor: default;
         }
-
         .skillTag:hover {
-          background-color: #4b5563;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
         }
 
         .timeline {
           position: relative;
-          border-left: 2px solid #374151;
+          border-left: 2px solid rgba(0, 255, 255, 0.2);
           margin-left: 1rem; 
         }
 
@@ -331,31 +343,34 @@
           justify-content: center;
           width: 2rem;
           height: 2rem;
-          background-color: rgba(55, 65, 81, 0.5);
-          border: 1px solid #4b5563;
+          background-color: #010101;
+          border: 1px solid rgba(0, 255, 255, 0.3);
+          box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
           border-radius: 9999px;
           transform: translateX(-50%);
         }
         .timelineIcon svg {
           width: 1rem;
           height: 1rem;
-          color: #67e8f9;
+          color: #0ff;
         }
 
         .timelineTitle {
+          font-family: 'Space Mono', monospace;
           font-size: 1.125rem;
           font-weight: 700;
-          color: #f3f4f6;
+          color: #fff;
         }
         .timelineSubtitle {
           font-size: 0.875rem;
           font-weight: 500;
-          color: #67e8f9;
+          color: #0ff;
           margin-top: 0.125rem;
         }
         .timelineDate {
+          font-family: 'Space Mono', monospace;
           font-size: 0.75rem;
-          color: #9ca3af;
+          color: #a3a3a3;
           margin-top: 0.25rem;
         }
         .timelineDescription {
@@ -368,7 +383,7 @@
 <body>
 
     <div id="root"></div>
-    <div class="gradient-mesh"></div>
+    <div class="cyber-bg"></div>
 
     <script type="text/babel">
         // --- Iconos SVG ---
@@ -378,7 +393,8 @@
             community: "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z",
             linkedin: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z",
             github: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.l17-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
-            rocket: "M13.2,2.3c0.1-0.2,0.1-0.4,0-0.6c-0.1-0.2-0.3-0.3-0.5-0.3H8.3C8,1.3,7.8,1.5,7.7,1.7c-0.1,0.2-0.1,0.4,0,0.6l2,5.1H3.8c-0.2,0-0.4,0.1-0.5,0.3S3.1,8.4,3.3,8.6l7,8c0.1,0.2,0.4,0.3,0.6,0.2c0.2-0.1,0.4-0.3,0.4-0.5V11h5.9c0.2,0,0.4-0.1,0.5-0.3s0.1-0.4-0.1-0.6L13.2,2.3z"
+            rocket: "M13.2,2.3c0.1-0.2,0.1-0.4,0-0.6c-0.1-0.2-0.3-0.3-0.5-0.3H8.3C8,1.3,7.8,1.5,7.7,1.7c-0.1,0.2-0.1,0.4,0,0.6l2,5.1H3.8c-0.2,0-0.4,0.1-0.5,0.3S3.1,8.4,3.3,8.6l7,8c0.1,0.2,0.4,0.3,0.6,0.2c0.2-0.1,0.4-0.3,0.4-0.5V11h5.9c0.2,0,0.4-0.1,0.5-0.3s0.1-0.4-0.1-0.6L13.2,2.3z",
+            code: "M9.4 7.4L12 4.8l2.6 2.6L16 6l-4-4-4 4 1.4 1.4zm5.2 9.2L12 19.2l-2.6-2.6L8 18l4 4 4-4-1.4-1.4zM19 3l-5 5 1.4 1.4L19 5.8V18.2l-3.6-3.6L14 16l5 5V3zM5 21l5-5-1.4-1.4L5 18.2V5.8l3.6 3.6L10 8 5 3v18z"
         };
 
         // --- Datos de los Perfiles ---
@@ -410,7 +426,7 @@
                 name: "Nefi Arroyo",
                 currentRole: "Tech Owner of AWS availability",
                 tagline: "Garantizando la continuidad del negocio a través de una infraestructura cloud robusta y resiliente.",
-                photoUrl: "https://placehold.co/150x150/0d1b2a/e0e1dd?text=Niubiz&font=inter",
+                photoUrl: "https://placehold.co/150x150/010101/00ffff?text=Niubiz&font=inter",
                 socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo" },
                 roleFocus: [
                      { title: "Visión Estratégica", description: "Definir y ejecutar el roadmap técnico para la disponibilidad de los servicios en AWS, alineado con los objetivos de negocio." },
@@ -423,7 +439,7 @@
                 name: "Nefi Arroyo",
                 currentRole: "Speaker & Community Organizer",
                 tagline: "Compartir conocimiento es la mejor forma de hacer crecer el ecosistema.",
-                photoUrl: "https://placehold.co/150x150/4a00e0/ffffff?text=Speaker&font=inter",
+                photoUrl: "https://placehold.co/150x150/010101/ff00ff?text=Speaker&font=inter",
                 socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo", github: "https://github.com/nefiarroyo" },
                 ponencias: [
                     { title: "Arquitecturas Serverless para el Mundo Real", subtitle: "AWS Community Day Perú 2024", description: "Una charla sobre patrones de diseño y lecciones aprendidas implementando soluciones serverless a gran escala." },
@@ -437,6 +453,19 @@
                 iniciativas: [
                      { title: "Coordinador, FLISoL Huancayo", date: "2018", description: "Organicé el Festival Latinoamericano de Instalación de Software Libre para promover el uso de tecnologías open source en mi región." },
                 ]
+            },
+            builder: {
+                name: "Nefi Arroyo",
+                currentRole: "Developer & Cloud Architect",
+                tagline: "De la idea al código, construyendo soluciones eficientes en la nube.",
+                photoUrl: "https://placehold.co/150x150/010101/ffff00?text=Builder&font=inter",
+                socialLinks: { linkedin: "https://www.linkedin.com/in/nefiarroyo", github: "https://github.com/nefiarroyo" },
+                philosophy: "Creo en la construcción de software que no solo resuelve problemas, sino que es mantenible, escalable y elegante. Mi enfoque se basa en entender los fundamentos, como las redes, para tomar decisiones de arquitectura informadas, aplicando principios de Clean Code y DevOps en cada etapa del ciclo de vida del desarrollo.",
+                techStack: ["Python", "Node.js", "C#", "SQL Server", "Terraform", "Docker", "Kubernetes", "Serverless Framework", "AWS CDK", "Git"],
+                featuredProjects: [
+                    { title: "Plataforma de Orquestación de Contenedores", subtitle: "Proyecto Personal", description: "Desarrollo de un sistema para automatizar el despliegue y la gestión de microservicios usando Kubernetes y Terraform, enfocado en la auto-escalabilidad y la resiliencia." },
+                    { title: "ERP para Sector Educativo", subtitle: "WII MAX INGENIEROS SAC", description: "Lideré el desarrollo de un Sistema de Planificación de Recursos Empresariales (ERP) completo, utilizando C#, SQL Server y AngularJS para crear una solución integral para la gestión académica y administrativa." },
+                ]
             }
         };
         
@@ -446,6 +475,25 @@
                 <path d={path} />
             </svg>
         );
+        
+        // --- Efecto de fondo de partículas ---
+        function BackgroundEffect() {
+            React.useEffect(() => {
+                const bg = document.querySelector('.cyber-bg');
+                const numDots = 50;
+                for (let i = 0; i < numDots; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    dot.style.left = `${Math.random() * 100}vw`;
+                    dot.style.top = `${Math.random() * 100}vh`;
+                    dot.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    dot.style.animationDelay = `${Math.random() * 5}s`;
+                    bg.appendChild(dot);
+                }
+            }, []);
+            return null;
+        }
+
 
         // --- Componente ProfileCard ---
         const ProfileCard = ({ profileData, isVisible }) => {
@@ -522,6 +570,27 @@
                         </section>
                     </>);
                 }
+                // Perfil Builder
+                if (profileData.philosophy) {
+                    return (<>
+                        <section className="section">
+                            <h2 className="sectionTitle">Filosofía de Arquitectura</h2>
+                            <p className="summaryText">{profileData.philosophy}</p>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Stack Tecnológico</h2>
+                            <div className="skillsContainer">
+                                {profileData.techStack.map(skill => <span key={skill} className="skillTag">{skill}</span>)}
+                            </div>
+                        </section>
+                        <section className="section">
+                            <h2 className="sectionTitle">Proyectos Destacados</h2>
+                            <div className="timeline">
+                                {profileData.featuredProjects.map((item, index) => renderTimelineItem(item, index, ICONS.rocket))}
+                            </div>
+                        </section>
+                    </>);
+                }
                 return null;
             };
             
@@ -574,10 +643,12 @@
                 { key: 'main', label: 'Principal', icon: ICONS.user },
                 { key: 'niubiz', label: 'Empresa', icon: ICONS.briefcase },
                 { key: 'community', label: 'Comunidad', icon: ICONS.community },
+                { key: 'builder', label: 'Builder', icon: ICONS.code },
             ];
 
             return (
                 <main className="mainContainer">
+                    <BackgroundEffect />
                     <div className="profileSwitcher">
                         {profileButtons.map(({ key, label, icon }) => {
                             const isActive = activeProfileKey === key;
